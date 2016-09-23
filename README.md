@@ -49,7 +49,7 @@ writing <b>anything</b> else gets ignored
 ```
 
 ## Information
-Control with WASD
+Control with arrow keys
 
 Image of car comes licence-free from: https://pixabay.com/en/racing-car-ferrari-red-top-view-296772/
 

@@ -33,7 +33,7 @@ class Rover():
             roverimg = pygame.transform.rotate(img, 180)
         return roverimg
 
-    def drawFOV(self):
+    def getFOV(self):
         fov_color = (23, 100, 255, 50)
         start_x = 0
         start_y = 0
@@ -64,3 +64,5 @@ class Rover():
         rect = pygame.Surface((width,height), pygame.SRCALPHA, 32)
         rect.fill(fov_color)
         gameDisplay.blit(rect, (start_x, start_y))
+        return start_x, start_y, width, height
+

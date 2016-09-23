@@ -10,15 +10,16 @@ class Rover():
         self.lead_y = 0
         self.FOV = None
 
-    def canMove(self, newX, newY):
+    def canMove(self, newX, newY, obstacles):
         newX = int(newX)
         newY = int(newY)
-        gameDisplay = pygame.display.get_surface()
-        if gameDisplay.get_at((newX, newY)) == constants.BLACK:
-            print "hit a wall"
-            return False
-        else:
-            return True
+        i = 0
+        for obstacle in obstacles:
+            if obstacle.x == newX and obstacle.y == newY:
+                print "hit a wall"
+                return False
+            i += 1
+        return True
 
     def rotateImg(self, img):
         roverimg = img
@@ -32,7 +33,7 @@ class Rover():
             roverimg = pygame.transform.rotate(img, 180)
         return roverimg
 
-    def drawFOV(self):
+    def getFOV(self):
         fov_color = (23, 100, 255, 50)
         start_x = 0
         start_y = 0
@@ -63,3 +64,5 @@ class Rover():
         rect = pygame.Surface((width,height), pygame.SRCALPHA, 32)
         rect.fill(fov_color)
         gameDisplay.blit(rect, (start_x, start_y))
+        return start_x, start_y, width, height
+

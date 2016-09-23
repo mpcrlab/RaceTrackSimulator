@@ -1,7 +1,7 @@
 import constants #my constants file (constants.py)
 import pygame
 from Rover import *
-
+from Obstacle import *
 class Simulation():
     def __init__(self):
         pygame.init()
@@ -11,6 +11,7 @@ class Simulation():
         self.img = pygame.image.load('car.png')
         self.done = False
         self.rover = Rover()
+        self.obstacles = []
         self.run()
 
     def run(self):
@@ -30,16 +31,19 @@ class Simulation():
 
     def pixelizeWorld(self):
         world = self.loadWorld()
+        self.obstacles = []
         y = 0
         x = 0
         for lines in world:
             for pixel in lines:
                 if pixel == 'o':
-                    posx = round(x * constants.BLOCK_SIZE / constants.BLOCK_SIZE) * constants.BLOCK_SIZE
-                    posy = round(y * constants.BLOCK_SIZE / constants.BLOCK_SIZE) * constants.BLOCK_SIZE
+                    obstacle = Obstacle()
+                    obstacle.x = round(x * constants.BLOCK_SIZE / constants.BLOCK_SIZE) * constants.BLOCK_SIZE
+                    obstacle.y = round(y * constants.BLOCK_SIZE / constants.BLOCK_SIZE) * constants.BLOCK_SIZE
                     gameDisplay = pygame.display.get_surface()
-                    pygame.draw.rect(gameDisplay, constants.BLACK,
-                                     (posx, posy, constants.BLOCK_SIZE, constants.BLOCK_SIZE))
+                    rect = (obstacle.x, obstacle.y, constants.BLOCK_SIZE, constants.BLOCK_SIZE)
+                    pygame.draw.rect(gameDisplay, constants.BLACK, rect)
+                    self.obstacles.append(obstacle)
                 x += 1
             y += 1
             x = 0
@@ -59,7 +63,7 @@ class Simulation():
     def getNextPosition(self):
         new_x = self.rover.lead_x + self.rover.lead_x_change
         new_y = self.rover.lead_y + self.rover.lead_y_change
-        if self.rover.canMove(new_x, new_y):
+        if self.rover.canMove(new_x, new_y, self.obstacles):
             return new_x, new_y
         else:
             return self.rover.lead_x, self.rover.lead_y
@@ -71,6 +75,9 @@ class Simulation():
     def outOfBounds(self):
         if self.rover.lead_x >= constants.DISPLAY_WIDTH or self.rover.lead_x < 0 or self.rover.lead_y >= constants.DISPLAY_HEIGTH or self.rover.lead_y < 0:
             self.done = True
+            return True
+        else:
+            return False
 
     def updateScreen(self):
         self.gameDisplay.fill(constants.WHITE)

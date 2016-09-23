@@ -77,7 +77,7 @@ class Simulation():
         self.pixelizeWorld()
         roverimg = self.rover.rotateImg(self.img)
         self.gameDisplay.blit(roverimg, [self.rover.lead_x, self.rover.lead_y, constants.BLOCK_SIZE, constants.BLOCK_SIZE])
-        #self.rover.drawFOV()
+        self.rover.drawFOV()
         pygame.display.update()
         self.clock.tick(constants.FPS)
 

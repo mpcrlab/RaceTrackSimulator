@@ -10,15 +10,16 @@ class Rover():
         self.lead_y = 0
         self.FOV = None
 
-    def canMove(self, newX, newY):
+    def canMove(self, newX, newY, obstacles):
         newX = int(newX)
         newY = int(newY)
-        gameDisplay = pygame.display.get_surface()
-        if gameDisplay.get_at((newX, newY)) == constants.BLACK:
-            print "hit a wall"
-            return False
-        else:
-            return True
+        i = 0
+        for obstacle in obstacles:
+            if obstacle.x == newX and obstacle.y == newY:
+                print "hit a wall"
+                return False
+            i += 1
+        return True
 
     def rotateImg(self, img):
         roverimg = img
